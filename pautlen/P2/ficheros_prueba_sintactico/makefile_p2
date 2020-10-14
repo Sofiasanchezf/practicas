@@ -1,0 +1,23 @@
+all: pruebaSintactico
+
+lex.yy.c: alfa.l
+	flex alfa.l
+
+y.tab.c: alfa.y
+		bison -d -y -v alfa.y
+
+y.tab.o: y.tab.c
+	gcc -Wall -g -c y.tab.c
+
+lex.yy.o: lex.yy.c
+	gcc -Wall -g -c lex.yy.c
+
+pruebaSintactico.o: pruebaSintactico.c
+	gcc -Wall -g -c -o pruebaSintactico.o pruebaSintactico.c
+
+pruebaSintactico: pruebaSintactico.o lex.yy.o y.tab.o
+		gcc -Wall -g -o pruebaSintactico pruebaSintactico.o lex.yy.o y.tab.o
+
+
+clean:
+	rm  *.o y.output lex.yy.c y.tab.c pruebaSintactico
